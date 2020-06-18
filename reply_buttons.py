@@ -1,11 +1,11 @@
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 
-BUTTON1_LAST_RECORD = "Last record"
+BUTTON_LAST_RECORD = "Last record"
 
 def get_base_reply_keyboard():
     keyboard = [
         [
-            KeyboardButton(BUTTON1_LAST_RECORD),
+            KeyboardButton(BUTTON_LAST_RECORD),
         ],
     ]
     return ReplyKeyboardMarkup(
