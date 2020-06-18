@@ -1,3 +1,6 @@
+﻿#!/usr/bin/python3.8
+# -*- coding: utf-8 -*-
+
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from config import TG_TOKEN
@@ -17,13 +20,13 @@ def get_base_inline_keyboard():
     ]
     return InlineKeyboardMarkup(keyboard)
 
-def keyboard_callback_handler(bot: Bot, update: Update, chat_data = None, **kwargs):
+def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
     query = update.callback_query
     data = query.data
 
     chat_id = update.effective_message.chat_id
 
-    if data ==CALLBACK_BUTTON_GOOD:
+    if data == CALLBACK_BUTTON_GOOD:
         #we should obligotary update the database with the data about health
         bot.send_message(
             chat_id = chat_id,
@@ -34,18 +37,18 @@ def keyboard_callback_handler(bot: Bot, update: Update, chat_data = None, **kwar
     elif data == CALLBACK_BUTTON_BAD:
         bot.send_message(
             chat_id = chat_id,
-            text = "OK, sorry, go have some tea 😔",
+            text = "OK, sorry, go have some tea",
             reply_markup = get_base_reply_keyboard(),   
         )
         
 
-def do_start(bot: Bot, update: Update):
+def do_start(bot, update):
     bot.send_message(
         chat_id = update.message.chat_id,
         text = "Hi",
     )
 
-def do_echo(bot: Bot, update: Update):
+def do_echo(bot, update):
     text = update.message.text
     if text == "feel": 
         #ideally we should ask for health if we have a row in a database without data about health, but for now let it be like this
