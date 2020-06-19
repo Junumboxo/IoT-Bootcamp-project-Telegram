@@ -1,13 +1,21 @@
 ﻿#!/usr/bin/python3.8
 # -*- coding: utf-8 -*-
 
-from telegram import Bot, Update#, InlineKeyboardButton, InlineKeyboardMarkup
+from logging import getLogger
+from telegram import Bot, Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
-from config import TG_TOKEN
 from reply_buttons import BUTTON_LAST_RECORD, BUTTON_HELP, BUTTON_FEEL, get_base_reply_keyboard
 from msg_buttons import CALLBACK_BUTTON_GOOD, CALLBACK_BUTTON_BAD, get_base_inline_keyboard
 from msg_texts import msg_start, msg_help, msg_echo, msg_feel_GOOD, msg_fell_BAD
 
+from config import load_config
+from utils import logger_factory
+
+config = load_config()
+logger = getLogger(__name__)    
+debug_requests = logger_factory(logger=logger)
+
+@debug_requests
 def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
     query = update.callback_query
     data = query.data
@@ -29,12 +37,14 @@ def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
             reply_markup = get_base_reply_keyboard(),   
         )
 
+@debug_requests
 def do_start(bot, update):
     bot.send_message(
         chat_id = update.message.chat_id,
         text = msg_start,
     )
 
+@debug_requests
 def do_help(bot, update):
     bot.send_message(
         chat_id = update.message.chat_id,
@@ -43,6 +53,7 @@ def do_help(bot, update):
     )
 
 #ideally we should ask for health if we have a row in a database without data about health, but for now let it be like this
+@debug_requests
 def do_feel(bot, update):
     bot.send_message(
         chat_id = update.message.chat_id,
@@ -51,6 +62,7 @@ def do_feel(bot, update):
     )
 
 #here we will have to optimize the code when we get access to the database
+@debug_requests
 def do_echo(bot, update):
     text = update.message.text
     if text == BUTTON_LAST_RECORD:
@@ -73,12 +85,17 @@ def do_echo(bot, update):
         )
 
 def main():
+    logger.info("The bot is starting...")
     bot = Bot(
-        token = TG_TOKEN,   
+        token = config.TG_TOKEN,   
     )
     updater = Updater(
         bot = bot,
     )
+
+    #Check if bot found TG API
+    info = bot.get_me()
+    logger.info(f'Bot info: {info}')
 
     start_handler = CommandHandler("start", do_start)
     help_handler = CommandHandler("help", do_help)
