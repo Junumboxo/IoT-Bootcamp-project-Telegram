@@ -6,7 +6,7 @@ from telegram import Bot, Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from reply_buttons import BUTTON_LAST_RECORD, BUTTON_HELP, BUTTON_FEEL, get_base_reply_keyboard
 from msg_buttons import CALLBACK_BUTTON_GOOD, CALLBACK_BUTTON_BAD, CALLBACK_BUTTON_SEND, CALLBACK_BUTTON_DISCARD, get_inline_keyboard_health, get_inline_keyboard_confirm
-from msg_texts import msg_start, msg_help, msg_echo, msg_feel_GOOD, msg_feel_BAD, msg_feel_SEND, msg_feel_DISCARD
+from msg_texts import msg_start, msg_help, msg_echo, msg_feel, msg_feel_GOOD, msg_feel_BAD, msg_feel_SEND, msg_feel_DISCARD
 
 from config import load_config
 from utils import logger_factory
@@ -72,7 +72,7 @@ def do_feel(bot, update):
     chat_id = update.effective_message.chat_id
     bot.send_message(
         chat_id = chat_id,
-        text = "How do you feel?",
+        text = msg_feel,
         reply_markup = get_inline_keyboard_health(),
     )
 
