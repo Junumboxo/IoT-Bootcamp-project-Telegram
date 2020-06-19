@@ -16,4 +16,5 @@ The project is being developed by the team "On Fire" (https://www.facebook.com/m
 
 
 Bot's username - @iot_climate_control_bot
-The bot is hosted on https://www.pythonanywhere.com/user/junumboxo/
+
+The bot is hosted on https://www.pythonanywhere.com/
