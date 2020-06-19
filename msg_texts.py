@@ -1,0 +1,5 @@
+﻿msg_start = "Hello! \nI am your climate control bot. I can provide information about the clime in your home. I will also sometimes ask how you feel. For more info enter command /help"
+msg_help = "This is help."
+msg_echo = "Sorry. I don't understand you."
+msg_feel_GOOD = "Glad youre OK! Sending your data to the server..."
+msg_fell_BAD = "Oh, I'm sorry 😥\n Sending your data to the server..."
