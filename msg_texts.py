@@ -1,6 +1,7 @@
 ﻿from msg_buttons import TITLES_FEEL
 
-msg_start = "Hello! \nI am your climate control bot. I can provide information about the clime in your home. I will also sometimes ask how you feel. For more info click the button **Help**"
+msg_start = '''Hello!
+I am your climate control bot. I can provide information about the clime in your home. I will also sometimes ask how you feel. For more info click the button <b>Help</b>'''
 msg_help = '''
 IoT Climate Control bot is connected to the device system in your room, which measures different characteristics of the climate in your room: temperature and humidity. The system is designed so that people with <b>respiratory difficulties</b> could have better control of their health. 
 

@@ -55,6 +55,8 @@ def do_start(bot, update):
     bot.send_message(
         chat_id = chat_id,
         text = msg_start,
+        parse_mode = ParseMode.HTML,
+        reply_markup = get_base_reply_keyboard(),
     )
 
 @debug_requests
