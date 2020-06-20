@@ -10,7 +10,7 @@ The project is being developed by the team "On Fire" (https://www.facebook.com/m
 *config.py* - loading the config from production.py or development.py  
 *msg_texts.py* - text messages for easier editing in a separated file  
 *utils.py* - tools for debugging  
-*pip-requirements.txt* - necessary libraries, need to install via `pip install -r requirements.txt`  
+*pip-requirements.txt* - necessary libraries, need to install via `pip install -r pip-requirements.txt`  
 
 Link to the bot - https://t.me/iot_climate_control_bot  
 The bot is hosted on https://www.pythonanywhere.com/
