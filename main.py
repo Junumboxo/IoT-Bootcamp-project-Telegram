@@ -10,7 +10,7 @@ from msg_texts import msg_start, msg_help, msg_echo, msg_feel, msg_feel_GOOD, ms
 
 from config import load_config
 from utils import logger_factory
-from server_requests import get_data, send_health
+from server_requests import get_data, send_feeling
 
 config = load_config()
 logger = getLogger(__name__)    
@@ -52,9 +52,9 @@ def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
             reply_markup = get_base_reply_keyboard(),   
         )
         status = None
-        while status is None:
+        while status != 200:
             status, data = get_data()
-        send_health(id_record = data["id"], timestamp = data["timestamp"], health_state = health_state, user_id = 1)
+        response = send_feeling(id_record = data["id"], timestamp = data["timestamp"], health_state = health_state, user_id = 1)
 
     elif data == CALLBACK_BUTTON_DISCARD:
         bot.send_message(
@@ -78,11 +78,10 @@ def do_start(bot, update, job_queue):
 def check_periodically_health(bot, job):
     #we have to check is we dont have data about health for this particular inregistration yet - get it
 
-    #status = None
-    #while status is None:
-    #    status, data = get_data()
-    #if data["health_state"] == 0:
-    if 0 == 0:
+    status = None
+    while status != 200:
+        status, data = get_data()
+    if data["feeling"] == 0:
         bot.send_message(
             chat_id = job.context,
             text = msg_feel,

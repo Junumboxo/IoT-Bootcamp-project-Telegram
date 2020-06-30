@@ -9,12 +9,13 @@ def get_data():
     data = r.json()
     return status, data
 
-def send_health(id_record, timestamp, health_state, user_id = 1):
+def send_feeling(id_record, timestamp, health_state, user_id = 1):
     data = {
         "id_record" : id_record,
         "user_id" : user_id,
         "timestamp" : timestamp,
-        "health_state" : health_state
+        "feeling" : health_state
     }
-    response = requests.post(URL, json = data)
-    return response
+    r = requests.post(URL, json = data)
+    status = r.status_code
+    return status
