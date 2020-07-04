@@ -10,7 +10,7 @@ from msg_texts import msg_start, msg_help, msg_echo, msg_feel, msg_feel_GOOD, ms
 
 from config import load_config
 from utils import logger_factory
-from server_requests import get_data, send_feeling
+from server_requests import get_data, send_health_status
 
 config = load_config()
 logger = getLogger(__name__)    
@@ -18,7 +18,7 @@ debug_requests = logger_factory(logger=logger)
 
 @debug_requests
 def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
-    health_state = None
+    health_status = None
     query = update.callback_query
     data = query.data
 
@@ -30,21 +30,21 @@ def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
             text = msg_feel_GOOD,
             reply_markup = get_inline_keyboard_confirm(),
         )
-        health_state = 1
+        health_status = 1
     elif data == CALLBACK_BUTTON_OK:
         bot.send_message(
             chat_id = chat_id,
             text = msg_feel_OK,
             reply_markup = get_inline_keyboard_confirm(),   
         )
-        health_state = 2
+        health_status = 2
     elif data == CALLBACK_BUTTON_BAD:
         bot.send_message(
             chat_id = chat_id,
             text = msg_feel_BAD,
             reply_markup = get_inline_keyboard_confirm(),   
         )
-        health_state = 3
+        health_status = 3
     elif data == CALLBACK_BUTTON_SEND:
         bot.send_message(
             chat_id = chat_id,
@@ -52,9 +52,15 @@ def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
             reply_markup = get_base_reply_keyboard(),   
         )
         status = None
+        response_post_request = None
         while status != 200:
             status, data = get_data()
-        response = send_feeling(id_record = data["id"], timestamp = data["timestamp"], health_state = health_state, user_id = 1)
+            print("Getting data from the server")
+            print(status)
+        while response_post_request != 200:
+            response_post_request = send_health_status(health_status = health_status)
+            print("Sending data to the server")
+            print(response_post_request)
 
     elif data == CALLBACK_BUTTON_DISCARD:
         bot.send_message(
@@ -81,7 +87,9 @@ def check_periodically_health(bot, job):
     status = None
     while status != 200:
         status, data = get_data()
-    if data["feeling"] == 0:
+        print("Getting data from the server")
+        print(status)
+    if data["health_status"] == 0:
         bot.send_message(
             chat_id = job.context,
             text = msg_feel,
@@ -91,11 +99,13 @@ def check_periodically_health(bot, job):
 @debug_requests
 def get_last_record(bot, update, chat_id):
     status = None
-    while status is None:
+    while status != 200:
         status, data = get_data()
+        print("Getting data from the server")
+        print(status)
 
     #and we will have to check these values on thresholds
-    reply = 'Datetime of measurements - {},\nValue - {}'.format(data["timestamp"], data["value"])
+    reply = 'Datetime of measurements - {},\nTemperature - {} °C,\nHumidity - {} %\nGas - {}'.format(data['timestamp'], data['temperature'], data['Humidity'], data['gas'])
     bot.send_message(
         chat_id = chat_id,
         text = reply,

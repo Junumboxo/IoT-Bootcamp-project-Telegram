@@ -1,7 +1,7 @@
 import requests
 
 # api-endpoint 
-URL = "localhost/last-sensor-data"
+URL = "localhost/last-sensors-data-aggregated"
   
 def get_data():  
     r = requests.get(url = URL) 
@@ -9,12 +9,9 @@ def get_data():
     data = r.json()
     return status, data
 
-def send_feeling(id_record, timestamp, health_state, user_id = 1):
+def send_health_status(health_status):
     data = {
-        "id_record" : id_record,
-        "user_id" : user_id,
-        "timestamp" : timestamp,
-        "feeling" : health_state
+        "health_status" : health_status
     }
     r = requests.post(URL, json = data)
     status = r.status_code
