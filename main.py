@@ -6,7 +6,7 @@ from telegram import Bot, Update, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from reply_buttons import BUTTON_LAST_RECORD, BUTTON_HELP, get_base_reply_keyboard
 from msg_buttons import CALLBACK_BUTTON_GOOD, CALLBACK_BUTTON_OK, CALLBACK_BUTTON_BAD, CALLBACK_BUTTON_SEND, CALLBACK_BUTTON_DISCARD, get_inline_keyboard_health, get_inline_keyboard_confirm
-from msg_texts import msg_start, msg_help, msg_echo, msg_feel, msg_feel_GOOD, msg_feel_OK, msg_feel_BAD, msg_feel_SEND, msg_feel_DISCARD
+from msg_texts import msg_start, msg_help, msg_echo, msg_feel, msg_feel_GOOD, msg_feel_OK, msg_feel_BAD, msg_feel_SEND, msg_feel_DISCARD, msg_temp_threshold_high, msg_hum_threshold_high, msg_hum_threshold_low, msg_gas_threshold_high 
 
 from config import load_config
 from utils import logger_factory
@@ -55,12 +55,8 @@ def keyboard_callback_handler(bot, update, chat_data = None, **kwargs):
         response_post_request = None
         while status != 200:
             status, data = get_data()
-            print("Getting data from the server")
-            print(status)
         while response_post_request != 200:
             response_post_request = send_health_status(health_status = health_status)
-            print("Sending data to the server")
-            print(response_post_request)
 
     elif data == CALLBACK_BUTTON_DISCARD:
         bot.send_message(
@@ -78,17 +74,35 @@ def do_start(bot, update, job_queue):
         parse_mode = ParseMode.HTML,
         reply_markup = get_base_reply_keyboard(),
     )
-    job_queue.run_repeating(check_periodically_health, 300, context = update.message.chat_id)
+    job_queue.run_repeating(check_periodically, 300, context = update.message.chat_id)
 
 @debug_requests
-def check_periodically_health(bot, job):
+def check_periodically(bot, job):
     #we have to check is we dont have data about health for this particular inregistration yet - get it
 
     status = None
     while status != 200:
         status, data = get_data()
-        print("Getting data from the server")
-        print(status)
+    if data["temperature"] >= 30:
+        bot.send_message(
+            chat_id = job.context,
+            text = msg_temp_threshold_high,
+        )
+    if data["humidity"] >= 60:
+        bot.send_message(
+            chat_id = job.context,
+            text = msg_hum_threshold_high,
+        )
+    if data["humidity"] < 40:
+        bot.send_message(
+            chat_id = job.context,
+            text = msg_hum_threshold_low,
+        )
+    if data["gas"] > 300:
+        bot.send_message(
+            chat_id = job.context,
+            text = msg_gas_threshold_high,
+        )
     if data["health_status"] == 0:
         bot.send_message(
             chat_id = job.context,
@@ -101,11 +115,9 @@ def get_last_record(bot, update, chat_id):
     status = None
     while status != 200:
         status, data = get_data()
-        print("Getting data from the server")
-        print(status)
 
     #and we will have to check these values on thresholds
-    reply = 'Datetime of measurements - {},\nTemperature - {} °C,\nHumidity - {} %\nGas - {}'.format(data['timestamp'], data['temperature'], data['Humidity'], data['gas'])
+    reply = 'Datetime of measurements - {},\nTemperature - {} °C,\nHumidity - {} %\nGas - {}'.format(data["timestamp"], data["temperature"], data["humidity"], data["gas"])
     bot.send_message(
         chat_id = chat_id,
         text = reply,
