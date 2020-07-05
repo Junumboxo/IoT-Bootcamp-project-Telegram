@@ -27,3 +27,7 @@ msg_feel_OK = "You have chosen {}.\nGlad you're OK!".format(TITLES_FEEL['INLINE_
 msg_feel_BAD = "You have chosen {}.\nOh, I'm sorry 😥\nGo have some tea".format(TITLES_FEEL['INLINE_BUTTON_BAD'])
 msg_feel_SEND = "Sending your reply to the server..."
 msg_feel_DISCARD = "OK, tell me one more time how you feel"
+msg_temp_threshold_high = "The temperature is higher than 30 degrees! You should cool the air now!"
+msg_hum_threshold_high = "The air is too wet! Turn on the ventilation, open the doors now!"
+msg_hum_threshold_low = "The air is too dry! Hang your clothes to dry in your room or leave water boiling"
+msg_gas_threshold_high = "The concentration of dangerous gases is too high! You should turn on the ventiation or open the window!"
