@@ -11,6 +11,14 @@ The project is being developed by the team "On Fire" (https://www.facebook.com/m
 *msg_texts.py* - text messages for easier editing in a separated file  
 *utils.py* - tools for debugging  
 *pip-requirements.txt* - necessary libraries, need to install via `pip install -r pip-requirements.txt`  
+*server-requests.py* - get and post requests to the local MQTT server  
 
 Link to the bot - https://t.me/iot_climate_control_bot  
 The bot is hosted on https://www.pythonanywhere.com/
+
+## Related repositories:
+Arduino code - https://github.com/Junumboxo/IoT-Bootcamp-project-Arduino  
+Web page with statistics - https://github.com/alexandra0292/alexandra0292.github.io  
+Telegram bot - https://github.com/Junumboxo/IoT-Bootcamp-project-Telegram  
+Local MQTT server - https://github.com/mdiannna/MQTT_Server_Smart_Home  
+AI - https://github.com/Junumboxo/IoT-project-bootcamp-AI
