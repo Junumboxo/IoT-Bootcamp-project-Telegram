@@ -18,7 +18,8 @@ The bot is hosted on https://www.pythonanywhere.com/
 
 ## Related repositories:
 Arduino code - https://github.com/Junumboxo/IoT-Bootcamp-project-Arduino  
+ESP code - https://github.com/rms11-source/IoT---BOOTCAMP/  
 Web page with statistics - https://github.com/alexandra0292/alexandra0292.github.io  
 Telegram bot - https://github.com/Junumboxo/IoT-Bootcamp-project-Telegram  
-Local MQTT server - https://github.com/mdiannna/MQTT_Server_Smart_Home  
+Local MQTT server - https://github.com/rms11-source/Smart-Home  
 AI - https://github.com/Junumboxo/IoT-project-bootcamp-AI
